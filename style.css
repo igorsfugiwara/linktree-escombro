@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Oxygen:wght@300;400;700&display=swap');
+
+* {
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background-color: #000000;
+    background-image: url("https://www.transparenttextures.com/patterns/rocky-wall.png");
+    color: #FFF;
+    width: 80%;
+    margin:0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2em;
+}
+
+img {
+    height: 100px;
+    width: 100px;
+}
+
+ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    margin: 1em 0;
+    background-color: grey;
+    padding: 0.5em;
+    border-radius: 12px;
+    text-align: center;
+}
+li a{
+    color: #FFF;
+    text-decoration: none;
+}
+li:hover{
+    transition: .5s;
+    background-color: lightgrey;
+    a{
+        color:#000
+}
+}
