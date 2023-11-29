@@ -41,8 +41,7 @@ li a{
 }
 li:hover{
     transition: .5s;
-    background-color: lightgrey;
-    a{
-        color:#000
-}
+    background-color: rgba(146, 146, 146, 0.578);
+    text-shadow: 0 0 5px black;
+    text;
 }
