@@ -13,12 +13,16 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2em;
+    padding: 4em 0;
 }
 
 img {
-    height: 100px;
+    height: fit-content;
     width: 100px;
+}
+
+.repetente {
+    padding-top: 2em;
 }
 
 ul {
@@ -34,14 +38,21 @@ li {
     padding: 0.5em;
     border-radius: 12px;
     text-align: center;
+    display: flex;
 }
 li a{
     color: #FFF;
     text-decoration: none;
+    width: 100%;
 }
 li:hover{
     transition: .5s;
     background-color: rgba(146, 146, 146, 0.578);
     text-shadow: 0 0 5px black;
-    text;
+}
+
+@media(min-width: 768px) {
+    body{
+        width: 60%;
+    }
 }
