@@ -18,7 +18,7 @@ body {
 
 img {
     height: fit-content;
-    width: 160px;
+    width: 200px;
 }
 
 .repetente {
@@ -47,7 +47,7 @@ li a{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 14px;
 }
 li:hover{
     transition: .5s;
@@ -56,7 +56,7 @@ li:hover{
 }
 .svg {
     fill: #fff;
-    height: 24px;
+    height: 28px;
     width: fit-content;
 }
 
