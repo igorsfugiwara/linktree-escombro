@@ -59,6 +59,17 @@ li:hover{
     height: 28px;
     width: fit-content;
 }
+.socials {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.socials li {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+}
 
 @media(min-width: 768px) {
     body{
