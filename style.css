@@ -76,3 +76,17 @@ li:hover{
         width: 60%;
     }
 }
+
+/* PULSE */
+.pulse {
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    }
+}
