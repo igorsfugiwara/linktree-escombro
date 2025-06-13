@@ -85,6 +85,7 @@ li:hover{
 @keyframes pulse-animation {
     0% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
     }
     100% {
     box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
