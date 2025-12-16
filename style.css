@@ -59,9 +59,35 @@ li:hover{
     height: 28px;
     width: fit-content;
 }
+.socials {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.socials li {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+}
 
 @media(min-width: 768px) {
     body{
         width: 60%;
+    }
+}
+
+/* PULSE */
+.pulse {
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    }
+    100% {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
     }
 }

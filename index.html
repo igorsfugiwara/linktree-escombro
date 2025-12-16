@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Escombro | Links</title>
-    <meta name="description" content="Links oficiais do Escombro." />
-    <!-- Tailwind CSS -->
+    <title>Igor Fujiwara | Portfolio Profissional</title>
+    <meta name="description" content="Portfolio profissional desenvolvido com arquitetura MVC e React.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -14,32 +13,33 @@
             colors: {
               brand: {
                 black: '#0a0a0a',
-                white: '#fafafa',
-                green: '#00dc82', // Vibrant Green
-                darkGreen: '#00a361',
+                dark: '#121212',
+                gray: '#1e1e1e',
+                green: '#00dc82', // Vibrant green
+                greenHover: '#00bd6f',
+                white: '#f5f5f5'
               }
             },
             fontFamily: {
-              sans: ['Cairo', 'sans-serif'],
+              sans: ['Inter', 'sans-serif'],
             }
           }
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
       body {
-        font-family: 'Cairo', sans-serif;
-        background-color: #000000;
-        background-image: url("https://www.transparenttextures.com/patterns/rocky-wall.png");
-        color: #FFF;
+        font-family: 'Inter', sans-serif;
+        background-color: #0a0a0a;
+        color: #f5f5f5;
       }
-      /* Custom scrollbar for webkit */
+      /* Custom scrollbar for Webkit */
       ::-webkit-scrollbar {
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0a0a0a;
+        background: #121212;
       }
       ::-webkit-scrollbar-thumb {
         background: #333;
@@ -52,16 +52,15 @@
   <script type="importmap">
 {
   "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/"
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+  </body>
 </html>
