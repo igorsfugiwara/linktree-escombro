@@ -115,7 +115,7 @@ const AdminPanel: React.FC = () => {
       <header className="sticky top-0 z-50 bg-neutral-900/95 backdrop-blur-md border-b border-white/10">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="./assets/logo_branco_2.png" alt="Escombro" className="h-7 w-auto" />
+            <img src="/assets/logo_branco_2.png" alt="Escombro" className="h-7 w-auto" />
             <span className="text-neutral-500 text-xs uppercase tracking-widest font-bold">Admin</span>
           </div>
           <div className="flex items-center gap-3">

@@ -9,7 +9,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
   return (
     <section className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingTop: '32px', paddingBottom: '16px' }}>
       <img
-        src="./assets/logo_branco_2.png"
+        src="/assets/logo_branco_2.png"
         alt={user.name}
         style={{ maxWidth: '250px', width: '100%', height: 'auto', marginBottom: '24px', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.5))' }}
       />

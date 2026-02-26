@@ -99,7 +99,7 @@ const DEFAULT_SITE_CONFIG: SiteConfig = {
 const DEFAULT_PROFILE: UserProfile = {
   name: 'Escombro',
   handle: '@escombro.hc',
-  avatarUrl: './assets/logo_branco_2.png',
+  avatarUrl: '/assets/logo_branco_2.png',
   subtitle: 'SÃO PAULO, BRASIL. HARDCORE POR UM MUNDO MAIS DIGNO',
 };
 

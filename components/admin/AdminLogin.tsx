@@ -39,7 +39,7 @@ const AdminLogin: React.FC = () => {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src="./assets/logo_branco_2.png" alt="Escombro" className="w-32 mx-auto mb-4 opacity-90" />
+          <img src="/assets/logo_branco_2.png" alt="Escombro" className="w-32 mx-auto mb-4 opacity-90" />
           <p className="text-neutral-500 text-xs uppercase tracking-widest font-bold">Painel Admin</p>
         </div>
 
