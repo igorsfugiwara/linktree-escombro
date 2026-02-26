@@ -1,67 +1,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Oxygen:wght@300;400;700&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
-    font-family: 'Cairo', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --brand-black: #000000;
+  --brand-white: #ffffff;
+  --brand-green: #22c55e;
 }
 
 body {
-    background-color: #000000;
-    background-image: url("https://www.transparenttextures.com/patterns/rocky-wall.png");
-    color: #FFF;
-    width: 80%;
-    margin:0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3em 0 4em;
+  font-family: 'Cairo', sans-serif;
+  background-color: var(--brand-black);
+  color: var(--brand-white);
+  -webkit-font-smoothing: antialiased;
 }
 
-img {
-    height: fit-content;
-    width: 200px;
+/* Tailwind-like utility classes used by components */
+.bg-brand-black { background-color: var(--brand-black); }
+.text-brand-white { color: var(--brand-white); }
+.text-brand-green { color: var(--brand-green); }
+.bg-brand-green { background-color: var(--brand-green); }
+.text-brand-black { color: var(--brand-black); }
+.border-brand-green { border-color: var(--brand-green); }
+.selection\:bg-brand-green ::selection { background-color: var(--brand-green); }
+.selection\:text-brand-black ::selection { color: var(--brand-black); }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
 }
 
-.repetente {
-    padding-top: 2em;
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
 }
 
-ul {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-li {
-    margin: 1em 0;
-    background-color: grey;
-    padding: 0.5em;
-    border-radius: 12px;
-    text-align: center;
-    display: flex;
-}
-li a{
-    color: #FFF;
-    text-decoration: none;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-}
-li:hover{
-    transition: .5s;
-    background-color: rgba(146, 146, 146, 0.578);
-    text-shadow: 0 0 5px black;
-}
-.svg {
-    fill: #fff;
-    height: 28px;
-    width: fit-content;
-}
-
-@media(min-width: 768px) {
-    body{
-        width: 60%;
-    }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
 }

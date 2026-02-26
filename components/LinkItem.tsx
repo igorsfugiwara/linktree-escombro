@@ -1,64 +1,100 @@
-import React from 'react';
-import { SocialLink } from '../types';
+// ============================================================
+// VIEW LAYER — components/LinkItem.tsx
+// Renders a single link with 3 image layout modes:
+//   - 'banner': full-width image above/behind the text
+//   - 'avatar': small image on the left of the text
+//   - 'none': text + icon only
+// ============================================================
 
-// VIEW LAYER
-// Reusable component for a single link
+import React from 'react';
+import { LinkItem as LinkItemType } from '../types';
+import IconRenderer from './IconRenderer';
 
 interface LinkItemProps {
-  link: SocialLink;
+  link: LinkItemType;
 }
 
 const LinkItem: React.FC<LinkItemProps> = ({ link }) => {
-  // Styles adapted to match the "Escombro" original vibe:
-  // - Uppercase font
-  // - Icons on the left
-  // - Transparent/Black background to show texture
-  // - White text
-  
-  const baseStyles = "group relative flex items-center w-full p-4 mb-3 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-green border font-bold uppercase tracking-wider";
-  
-  // Highlight: White bg, Black text (Inverted)
-  // Standard: Transparent/Black bg, White text, White border
-  const standardStyles = "bg-black/40 border-white text-white hover:bg-white hover:text-black hover:border-white";
-  const highlightStyles = "bg-white text-black border-white hover:bg-brand-green hover:border-brand-green hover:text-black";
+  const base = "group relative flex w-full mb-3 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg focus-within:outline-none focus-within:ring-2 focus-within:ring-brand-green border font-bold uppercase tracking-wider overflow-hidden";
+  const standard = "bg-black/40 border-white text-white hover:bg-white hover:text-black";
+  const highlight = "bg-white text-black border-white hover:bg-brand-green hover:border-brand-green";
 
+  const colorClass = link.highlight ? highlight : standard;
+
+  // ── BANNER MODE ──────────────────────────────────────────
+  if (link.imageType === 'banner' && link.imageUrl) {
+    return (
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${base} ${colorClass} flex-col p-0`}
+        aria-label={`Visitar ${link.title}`}
+      >
+        {/* Banner image — 100% width */}
+        <div className="w-full aspect-[3/1] overflow-hidden">
+          <img
+            src={link.imageUrl}
+            alt={link.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        {/* Text below banner */}
+        <div className="flex items-center px-4 py-3 gap-3">
+          {link.iconKey && <IconRenderer iconKey={link.iconKey} size={20} />}
+          <span className="flex-1 text-left">{link.title}</span>
+          <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
+      </a>
+    );
+  }
+
+  // ── AVATAR MODE ──────────────────────────────────────────
+  if (link.imageType === 'avatar' && link.imageUrl) {
+    return (
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${base} ${colorClass} items-center p-3 gap-3`}
+        aria-label={`Visitar ${link.title}`}
+      >
+        <img
+          src={link.imageUrl}
+          alt=""
+          className="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-white/20"
+        />
+        <span className="flex-1 text-left">{link.title}</span>
+        {link.highlight && (
+          <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        )}
+      </a>
+    );
+  }
+
+  // ── DEFAULT MODE (icon + text) ───────────────────────────
   return (
-    <a 
+    <a
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${baseStyles} ${link.highlight ? highlightStyles : standardStyles}`}
+      className={`${base} ${colorClass} items-center p-4 gap-3`}
       aria-label={`Visitar ${link.title}`}
     >
-      {/* Icon Section */}
-      {link.iconPath && (
-        <div className="mr-4 flex-shrink-0">
-           <svg 
-             viewBox="0 0 24 24" 
-             width="24" 
-             height="24" 
-             stroke="currentColor" 
-             strokeWidth="2" 
-             fill="none" 
-             strokeLinecap="round" 
-             strokeLinejoin="round"
-             className="transition-colors duration-300"
-            >
-              <path d={link.iconPath} />
-            </svg>
+      {link.iconKey && (
+        <div className="flex-shrink-0">
+          <IconRenderer iconKey={link.iconKey} size={22} />
         </div>
       )}
-
-      {/* Text Section */}
-      <span className="flex-1 text-left relative z-10">
-        {link.title}
-      </span>
-      
-      {/* Optional Highlight Indicator (if needed, but style usually sufficient) */}
+      <span className="flex-1 text-left relative z-10">{link.title}</span>
       {link.highlight && (
-        <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
-           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </span>
+        <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
       )}
     </a>
   );
