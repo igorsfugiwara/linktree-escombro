@@ -1,56 +1,78 @@
 // ============================================================
 // CONTROLLER LAYER — hooks/useAuth.ts
-// Auth state via React Context so all components share the
-// same isAuthenticated value.
+// Auth state via Firebase Auth (email/password + Google).
 // ============================================================
 
-import { useState, useCallback, createContext, useContext } from 'react';
+import { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import React from 'react';
-
-const SESSION_KEY = 'escombro_admin_session';
-
-// Mock credentials — replace with env vars or real auth
-const VALID_CREDENTIALS = [
-  { username: 'lingao', password: 'wadawada' },
-  { username: 'jota', password: 'naofode' },
-];
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+  type User,
+} from 'firebase/auth';
+import { auth } from '../firebase';
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: User | null;
+  loading: boolean;
   error: string | null;
-  login: (username: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<boolean>;
+  loginWithGoogle: () => Promise<boolean>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return sessionStorage.getItem(SESSION_KEY) === 'true';
-  });
+const googleProvider = new GoogleAuthProvider();
 
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const login = useCallback((username: string, password: string): boolean => {
-    const match = VALID_CREDENTIALS.some(
-      c => username.trim().toLowerCase() === c.username && password === c.password
-    );
-    if (match) {
-      sessionStorage.setItem(SESSION_KEY, 'true');
-      setIsAuthenticated(true);
-      setError(null);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
+    });
+    return () => unsub();
+  }, []);
+
+  const login = useCallback(async (email: string, password: string): Promise<boolean> => {
+    setError(null);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
       return true;
+    } catch {
+      setError('Email ou senha incorretos.');
+      return false;
     }
-    setError('Usuário ou senha incorretos.');
-    return false;
+  }, []);
+
+  const loginWithGoogle = useCallback(async (): Promise<boolean> => {
+    setError(null);
+    try {
+      await signInWithPopup(auth, googleProvider);
+      return true;
+    } catch {
+      setError('Falha no login com Google.');
+      return false;
+    }
   }, []);
 
   const logout = useCallback(() => {
-    sessionStorage.removeItem(SESSION_KEY);
-    setIsAuthenticated(false);
+    signOut(auth);
   }, []);
 
-  return React.createElement(AuthContext.Provider, { value: { isAuthenticated, login, logout, error } }, children);
+  return React.createElement(
+    AuthContext.Provider,
+    { value: { isAuthenticated: !!user, user, loading, error, login, loginWithGoogle, logout } },
+    children,
+  );
 };
 
 export function useAuth() {

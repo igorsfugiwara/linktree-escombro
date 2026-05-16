@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { ref, onValue, set, update, remove } from 'firebase/database';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import { LinkItem, SiteConfig, UserProfile } from '../types';
 
 // --- Default Data (used only when the database is empty) ---
@@ -144,9 +144,11 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setLinks(Object.values(data));
       } else {
         // First time: seed defaults into Firebase
-        const seed: Record<string, LinkItem> = {};
-        DEFAULT_LINKS.forEach(l => { seed[l.id] = l; });
-        set(ref(db, DB_PATHS.LINKS), seed);
+        if (auth.currentUser) {
+          const seed: Record<string, LinkItem> = {};
+          DEFAULT_LINKS.forEach(l => { seed[l.id] = l; });
+          set(ref(db, DB_PATHS.LINKS), seed);
+        }
       }
       setLinksInitialized(true);
     });
@@ -160,7 +162,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (snapshot.exists()) {
         setSiteConfig(snapshot.val() as SiteConfig);
       } else {
-        set(ref(db, DB_PATHS.SITE_CONFIG), DEFAULT_SITE_CONFIG);
+        if (auth.currentUser) set(ref(db, DB_PATHS.SITE_CONFIG), DEFAULT_SITE_CONFIG);
       }
       setConfigInitialized(true);
     });
@@ -175,6 +177,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // --- Link Actions (write to Firebase; stream updates local state) ---
 
   const addLink = useCallback((link: Omit<LinkItem, 'id' | 'order'>) => {
+    if (!auth.currentUser) return;
     setLinks(prev => {
       const newLink: LinkItem = {
         ...link,
@@ -187,6 +190,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   const updateLink = useCallback((id: string, updates: Partial<LinkItem>) => {
+    if (!auth.currentUser) return;
     setLinks(prev => {
       const updated = prev.map(l => l.id === id ? { ...l, ...updates } : l);
       const link = updated.find(l => l.id === id);
@@ -196,11 +200,13 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   const deleteLink = useCallback((id: string) => {
+    if (!auth.currentUser) return;
     remove(ref(db, `${DB_PATHS.LINKS}/${id}`));
     setLinks(prev => prev.filter(l => l.id !== id));
   }, []);
 
   const reorderLinks = useCallback((fromIndex: number, toIndex: number) => {
+    if (!auth.currentUser) return;
     setLinks(prev => {
       const sorted = [...prev].sort((a, b) => a.order - b.order);
       const [moved] = sorted.splice(fromIndex, 1);
@@ -215,6 +221,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   const toggleLinkActive = useCallback((id: string) => {
+    if (!auth.currentUser) return;
     setLinks(prev => {
       const updated = prev.map(l => l.id === id ? { ...l, active: !l.active } : l);
       const link = updated.find(l => l.id === id);
@@ -226,6 +233,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // --- Site Config Actions ---
 
   const updateSiteConfig = useCallback((updates: Partial<SiteConfig>) => {
+    if (!auth.currentUser) return;
     setSiteConfig(prev => {
       const next = { ...prev, ...updates };
       set(ref(db, DB_PATHS.SITE_CONFIG), next);

@@ -8,21 +8,31 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 const AdminLogin: React.FC = () => {
-  const { login, error } = useAuth();
+  const { login, loginWithGoogle, error } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [shaking, setShaking] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault(): void }) => {
     e.preventDefault();
-    const ok = login(username, password);
+    setSubmitting(true);
+    const ok = await login(email, password);
+    setSubmitting(false);
     if (ok) {
       navigate('/admin');
     } else {
       setShaking(true);
       setTimeout(() => setShaking(false), 500);
     }
+  };
+
+  const handleGoogle = async () => {
+    setSubmitting(true);
+    const ok = await loginWithGoogle();
+    setSubmitting(false);
+    if (ok) navigate('/admin');
   };
 
   return (
@@ -46,16 +56,16 @@ const AdminLogin: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">
-              Usuário
+              Email
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              autoComplete="username"
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete="email"
               className="w-full bg-black border border-white/20 text-white px-4 py-3 text-sm focus:outline-none focus:border-brand-green transition-colors"
               style={{ borderRadius: '2px' }}
-              placeholder="usuário"
+              placeholder="admin@escombro.com"
             />
           </div>
 
@@ -80,12 +90,30 @@ const AdminLogin: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full bg-brand-green text-brand-black font-black uppercase tracking-widest py-3 text-sm hover:bg-white transition-colors mt-2"
+            disabled={submitting}
+            className="w-full bg-brand-green text-brand-black font-black uppercase tracking-widest py-3 text-sm hover:bg-white transition-colors mt-2 disabled:opacity-50"
             style={{ borderRadius: '2px' }}
           >
-            Entrar
+            {submitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-brand-black border-t-transparent rounded-full animate-spin inline-block" />
+                Entrando...
+              </span>
+            ) : 'Entrar'}
           </button>
         </form>
+
+        <div className="mt-3">
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={submitting}
+            className="w-full bg-transparent border border-white/20 text-white font-bold uppercase tracking-widest py-3 text-sm hover:bg-white/10 transition-colors disabled:opacity-50"
+            style={{ borderRadius: '2px' }}
+          >
+            Entrar com Google
+          </button>
+        </div>
 
         <p className="text-center text-neutral-700 text-xs mt-6 uppercase tracking-wider">
           Escombro HC © {new Date().getFullYear()}
