@@ -12,6 +12,7 @@ import {
   signOut,
   onAuthStateChanged,
   type User,
+  type AuthError,
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -47,8 +48,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await signInWithEmailAndPassword(auth, email, password);
       return true;
-    } catch {
-      setError('Email ou senha incorretos.');
+    } catch (err) {
+      const code = (err as AuthError).code ?? String(err);
+      setError(`Erro: ${code}`);
       return false;
     }
   }, []);
@@ -58,8 +60,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await signInWithPopup(auth, googleProvider);
       return true;
-    } catch {
-      setError('Falha no login com Google.');
+    } catch (err) {
+      const code = (err as AuthError).code ?? String(err);
+      setError(`Erro: ${code}`);
       return false;
     }
   }, []);
