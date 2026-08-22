@@ -9,6 +9,7 @@ import React, { useState, useEffect, useCallback, createContext, useContext } fr
 import { ref, onValue, set, update, remove } from 'firebase/database';
 import { db, auth } from '../firebase';
 import { LinkItem, SiteConfig, UserProfile } from '../types';
+import { isPastShowLink } from '../constants';
 
 // --- Default Data (used only when the database is empty) ---
 const DEFAULT_LINKS: LinkItem[] = [
@@ -247,9 +248,14 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   // --- Computed ---
+  // Shows cuja data já passou caem para o fim da lista; o resto mantém a
+  // ordem definida no admin.
   const activeLinks = links
     .filter(l => l.active)
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => {
+      const pastDiff = Number(isPastShowLink(a)) - Number(isPastShowLink(b));
+      return pastDiff !== 0 ? pastDiff : a.order - b.order;
+    });
 
   const value: CMSContextType = {
     links, activeLinks, siteConfig, profile, loading,
