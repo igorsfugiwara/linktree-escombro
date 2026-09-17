@@ -29,3 +29,10 @@ dist-ssr
 # Environment variables (secrets)
 .env
 .env.*
+
+# chaves SSH — nunca versionar
+github
+github.pub
+*.pem
+id_rsa*
+id_ed25519*
