@@ -74,6 +74,10 @@ const PublicPage: React.FC = () => {
 
           <footer className="mt-12 text-center text-neutral-600 text-xs">
             <p>© {new Date().getFullYear()} {profile.name}. Todos os direitos reservados.</p>
+            <p className="mt-1">
+              Site por{' '}
+              <a href="https://igorfugiwara.netlify.app/pt/" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-400">Igor Fugiwara</a>
+            </p>
           </footer>
         </main>
 
